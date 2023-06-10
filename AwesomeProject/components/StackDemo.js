@@ -9,7 +9,7 @@ const Stack = createNativeStackNavigator();
 
 const HomeScreen = ({navigation}) => {
     return (
-     <View>
+     <View style={{ flexDirection:'row', justifyContent:'space-evenly'}}>
             <Button
                 title="Go to Tim's profile"
                 onPress={() =>
@@ -23,14 +23,15 @@ const HomeScreen = ({navigation}) => {
                 }
             />
             <Button
-              title="KeyPad"
-              onPress={() =>
-              navigation.navigate('KeyPad')
-              }
+                title= "KeyPad"
+                onPress = {()=>
+                navigation.navigate('KeyPad')
+                }
             />
       </View>
     );
   };
+
   const ProfileScreen = ({navigation, route}) => {
     return <Text>This is {route.params.name}'s profile</Text>;
   };
@@ -39,14 +40,12 @@ const MyStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{title: 'Welcome!'}}
+        <Stack.Screen name="Home" component={HomeScreen}
+          options={{title: 'Welcome'}}
         />
         <Stack.Screen name="Profile" component={ProfileScreen} />
         <Stack.Screen name="CountChange" component={CountChange} />
-        <Stack.Screen name="KeyPad" component={KeyPad} />
+        <Stack.Screen name="KeyPad" component ={KeyPad} />
       </Stack.Navigator>
     </NavigationContainer>
   );
