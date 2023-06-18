@@ -1,7 +1,7 @@
 import react from 'react';
 import {Button,Text,View} from 'react-native';
 
-const CatFoodButton = ({catFood, updateCatFood, storeData}) => {
+const CatFoodButton = ({catFood, updateCatFood, storeData, resetCatFood}) => {
     return (
       <View style={{alignContent: 'center',
                     margin: 20}}>
@@ -16,6 +16,11 @@ const CatFoodButton = ({catFood, updateCatFood, storeData}) => {
           disabled={catFood == 0}
           title={'Feed Me Mooooooore!!'}
           color='#BBBBF0'
+        />
+        <Button title='resetCatFood'
+                      onPress={() => {updateCatFood(4);
+                                     resetCatFood()}}
+                       color='#BBBBF0'
         />
        </View>
     );

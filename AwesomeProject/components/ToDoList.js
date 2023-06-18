@@ -1,5 +1,6 @@
 import React,{useState} from 'react';
-import {View, Button, Text, TextInput} from 'react-native';
+import {View, Button, Text} from 'react-native';
+import TaskButton from './TaskButton';
 
 const ToDoList = () => {
     return (
@@ -18,21 +19,5 @@ const ToDoList = () => {
       </View>
     );
   };
-
-const TaskButton = ({taskname}) => {
-  const [finish, setFinish] = useState(false);
-  return (
-    <View>
-      <Button
-        onPress={() => {
-          setFinish(!finish);
-        }}
-        disabled={finish}
-        title={finish ? 'Well Done!' : taskname}
-        color='#BBBBF0'
-      />
-    </View>
-  );
-};
 
 export default ToDoList;

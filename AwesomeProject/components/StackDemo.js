@@ -3,7 +3,6 @@ import {Button,Text,View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import ToDoList from './ToDoList';
-import NoteTaker from './NoteTaker';
 import CatFoodButton from './CatFoodButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -41,6 +40,16 @@ const HomeScreen = ({navigation}) => {
       }
     }
 
+    const resetCatFood = async () => {
+      try {
+        console.log('in clearData')
+        await AsyncStorage.clear()
+      } catch(e) {
+        console.log("error in clearData ")
+        console.dir(e)
+      }
+}
+
     useEffect(() => {getCount()}, [])
 
     return (
@@ -51,12 +60,6 @@ const HomeScreen = ({navigation}) => {
                 title= "ToDoList"
                 onPress = {()=>
                 navigation.navigate('ToDoList')
-                }
-              />
-              <Button
-                title= "NoteTaker"
-                onPress = {()=>
-                navigation.navigate('NoteTaker')
                 }
               />
             </View>
@@ -72,7 +75,8 @@ const HomeScreen = ({navigation}) => {
               </View>
               <CatFoodButton catFood={catFood}
                              updateCatFood={updateCatFood}
-                             storeData={storeData}/>
+                             storeData={storeData}
+                             resetCatFood={resetCatFood}/>
             </View>
       </View>
     );
@@ -86,7 +90,6 @@ const MyStack = () => {
           options={{title: 'HAve a nice day :)'}}
         />
         <Stack.Screen name="ToDoList" component ={ToDoList} />
-        <Stack.Screen name="NoteTaker" component ={NoteTaker} />
       </Stack.Navigator>
     </NavigationContainer>
   );
