@@ -4,6 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import ToDoList from './ToDoList';
 import CatFoodButton from './CatFoodButton';
+import NoteTaker from './NoteTaker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
@@ -62,6 +63,12 @@ const HomeScreen = ({navigation}) => {
                 navigation.navigate('ToDoList')
                 }
               />
+              <Button
+                title= "NoteTaker"
+                onPress = {()=>
+                navigation.navigate('NoteTaker')
+                }
+              />
             </View>
             <View style={{alignSelf: 'center',
                           flexDirection: 'row',
@@ -90,6 +97,8 @@ const MyStack = () => {
           options={{title: 'HAve a nice day :)'}}
         />
         <Stack.Screen name="ToDoList" component ={ToDoList} />
+        <Stack.Screen name="NoteTaker" component ={NoteTaker} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
