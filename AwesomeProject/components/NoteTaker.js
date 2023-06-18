@@ -1,35 +1,23 @@
 import React, {useState} from 'react';
 import {Text, TextInput, View} from 'react-native';
+import TextInputer from './TextInputer';
 
 const NoteTaker = () => {
     const [change,setChange] = useState(0)
     return (
       <View style={{flexDirection:'column',
-                    padding: 50,}}>
+                    padding: 30}}>
             <View>
             </View>
             <Text style = {{fontSize: 20,
-                            alignSelf: 'center',
-                            padding: 20}}>
-                Write anything if you have any thoughts... 🤔
+                            alignSelf: 'center',}}>
+                Feel free to write anything :)
             </Text>
             <View>
-              <InputArea />
+                <TextInputer />
             </View>
       </View>
-      
     )
   }
-
-  function InputArea() {
-  return (
-    <textarea
-        name="InputArea"
-        rows={40}
-        cols={40}
-        padding={20}
-    />
-  );
-}
 
 export default NoteTaker;
