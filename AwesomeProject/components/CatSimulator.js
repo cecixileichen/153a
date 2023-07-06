@@ -75,7 +75,7 @@ const CatSimulator = ({navigation}) => {
   return (
         <View style={styles.maincontainor} >
             <View style={styles.header}>
-                <Text>Happy Monday :)</Text>
+                <Text>Happy Thursday :)</Text>
                 <NameTag/>
             </View>
             <View style={styles.containor}>
