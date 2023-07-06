@@ -1,0 +1,1 @@
+{"ast":null,"code":"import App from \"./components/ToDoList\";\nexport default App;","map":{"version":3,"names":["App"],"sources":["/Users/iamcccc/Desktop/153a/AwesomeProject/App.js"],"sourcesContent":["import App from \"./components/ToDoList\";\n\nexport default App"],"mappings":"AAAA,OAAOA,GAAG;AAEV,eAAeA,GAAG"},"metadata":{},"sourceType":"module","externalDependencies":[]}
