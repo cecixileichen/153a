@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
 import {Alert, Modal, StyleSheet, Text, TextInput, Pressable, View} from 'react-native';
 
-const AddTodo = ({updateTodo}) => {
+const AddTodo = ({setTodo, handleAddTodo}) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [todo, setTodo] = useState('');
   return (
     <View>
       <Modal
@@ -24,7 +23,7 @@ const AddTodo = ({updateTodo}) => {
             <Text>     </Text>
             <Pressable
               style={styles.buttonClose}
-              onPress={() => {updateTodo(todo),
+              onPress={() => {handleAddTodo(),
                               setModalVisible(!modalVisible)
               }}>
               <Text style={styles.textStyle}>Add</Text>
@@ -71,6 +70,8 @@ const styles = StyleSheet.create({
     height: 30,
   },
   buttonClose: {
+    height: 30,
+    width: 30,
     alignItems: 'center',
   },
   textStyle: {

@@ -1,3 +1,3 @@
-import MyStack from "./components/CatSimulator";
+import CatSimulator from "./components/CatSimulator";
 
-export default MyStack
+export default CatSimulator

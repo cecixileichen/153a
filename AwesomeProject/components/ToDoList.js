@@ -1,48 +1,62 @@
-import React, { useContext, useState } from 'react';
-import { View, Text, Button, StyleSheet, FlatList, Pressable} from 'react-native';
+import React, { useContext, useState, useEffect } from 'react';
+import { View, Text, StyleSheet, FlatList, Pressable, Alert} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import profileContext from './profileContext';
 import AddTodo from './AddToDo';
 
-export default function TodoListScreen({route, navigation}) {
+export default function TodoListScreen({route}) {
   const [todo, setTodo] = useState('');
   const [todos, setTodos] = useState([]);
-  const [finishTodos, setFinishTodos] = useState([]);
-  const [modalVisible, setModalVisible] = useState(false);
-  const {profile} = useContext(profileContext);
+  const {profile, setProfile} = useContext(profileContext);
 
-  const test = () => {
-    setTodo('test')
-    console.log(todo)
-    handleAddTodo()
+  const getTodos = async () => {
+    try{
+        const jsonValue = await AsyncStorage.getItem('Todos')
+        if (jsonValue==null){
+            setTodos([])
+        } else {
+            const data = JSON.parse(jsonValue);
+            setTodos(data)
+        }
+    } catch (e) {
+        console.log('error in getData ')
+        console.dir(e)
+    }
+}
+
+  const storeTodos = async (value) => {
+    try {
+      const jsonValue = JSON.stringify(value)
+      await AsyncStorage.setItem('Todos', jsonValue)
+    } catch (e) {
+      console.log("error in storeData ")
+      console.dir(e)
+    }
   }
 
   const handleAddTodo = () => {
-    console.log("handle")
     if (todo.length > 0) {
-      console.log('1')
       const newTodo = {
         id: Date.now().toString(),
         todo: todo,
       };
       setTodos([...todos, newTodo]);
+      storeTodos([...todos, newTodo])
       setTodo('');
     }
   };
 
   const handleDeleteTodo = id => {
-    const finishedItem = {
-    };
+    setProfile({catFood: profile.catFood + 1,
+                name: 'James',
+                age: 235})
     const filteredTodos = todos.filter(item => item.id !== id);
-    setFinishTodos([...finishTodos, finishedItem]);
-    // setTodos(filteredTodos);
+    setTodos(filteredTodos);
+    storeTodos(filteredTodos)
   };
 
-  const updateTodo = (text) => {
-    setTodo(text);
-    console.log(todo);
-    handleAddTodo();
-  }
+  useEffect(() => {getTodos()}, [])
 
   return (
     <View style={styles.maincontainor}>
@@ -56,26 +70,22 @@ export default function TodoListScreen({route, navigation}) {
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
             <View style={styles.todo}>
-              <Text style={styles.todoText}>{item.todo}</Text>
               <Pressable
-                onPress={() => {handleDeleteTodo(item.id)
+                onPress={() => {Alert.alert('', 'yayyyy! u earn 1 catfood', 'ok')
+                                handleDeleteTodo(item.id)
                                 route.params.updateCatFood(1)
                               }}
                 style={styles.finishButton}
               >
                 <Text>❛‿˂̵</Text>
               </Pressable>
-
+              <Text style={styles.todoText}>{item.todo}</Text>        
             </View>
           )}
         />
       </View>
       <View style={styles.footer}>
-        <AddTodo updateTodo={updateTodo}/>
-        <Text>{todo}</Text>
-        <Text>todos={JSON.stringify(todos)}</Text>
-        <Text>finishTodos={JSON.stringify(finishTodos)}</Text>
-
+        <AddTodo setTodo={setTodo} handleAddTodo={handleAddTodo}/>
       </View>
     </View>
   );
@@ -100,7 +110,7 @@ const styles = StyleSheet.create({
     flex: 6,
   },
   footer: {
-    flex: 1.3,
+    flex: 1,
     paddingLeft: 40
   },
   container: {
@@ -132,13 +142,12 @@ const styles = StyleSheet.create({
   },
   todoText: {
     flex: 1,
-    marginRight: 10,
+    marginLeft: 20,
   },
   finishButton: {
     height: 30,
     width: 30,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'red'
   }
 });

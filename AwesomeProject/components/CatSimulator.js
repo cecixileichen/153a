@@ -12,6 +12,7 @@ import NavigateButton from "./NavigateButton";
 import DeadCat from "./DeadCat";
 import profileContext from "./profileContext";
 import TodoListScreen from "./ToDoList";
+import FocusClock from "./FocusClock";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,17 +23,22 @@ const CatSimulator = ({navigation}) => {
     const {profile, setProfile} = useContext(profileContext);
 
     const updateCatFood = (val) => {
-        setProfile({catFood: val})
+        setProfile({catFood: profile.catFood+val})
+        storeCatFood(profile.catFood + val)
     }
 
     const getCatFood = async () => {
         try{
             const jsonValue = await AsyncStorage.getItem('CatFood')
             if (jsonValue==null){
-                setProfile({catFood: 5})
+                setProfile({catFood: 5,
+                            name: 'James',
+                            age: 235})
             } else {
                 const num = JSON.parse(jsonValue);
-                setProfile({catFood: num})
+                setProfile({catFood: num,
+                            name: 'James',
+                            age: 235})
             }
         } catch (e) {
             console.log('error in getData ')
@@ -65,10 +71,8 @@ const CatSimulator = ({navigation}) => {
 
     useEffect(() => {getCatFood()}, [])
 
-    const value = {profile, setProfile}
 
   return (
-    <profileContext.Provider value={value}>
         <View style={styles.maincontainor} >
             <View style={styles.header}>
                 <Text>Happy Monday :)</Text>
@@ -99,36 +103,49 @@ const CatSimulator = ({navigation}) => {
                 <Button title='reset' onPress={() => {resetCatFood()}} />
                 :
                 <></>}
-                <CatFoodBowl onPress={() => {value.setProfile({catFood: 3});
-                                             storeCatFood(profile.catFood -1);
-                                             console.log(profile.catFood)}}/>
+                <CatFoodBowl onPress={() => {setProfile({catFood: profile.catFood - 1,
+                                                        name: 'James',
+                                                        age: 235});
+                                             storeCatFood(profile.catFood -1);}}/>
                 {/* add function: update status of cat(how hungry), update cat dialog(appear for 2 seconds) */}
             </View>
             <View style={styles.footer}>
                 <NavigateButton type={false} onPress={() => navigation.navigate('TodoList', {updateCatFood})} />
-                <NavigateButton type={true} onPress={() => alert('FocusClock')} />
+                <NavigateButton type={true} onPress={() => navigation.navigate('FocusClock')} />
             </View>
         </View>
-    </profileContext.Provider>
   )
 }
 
 const MyStack = () => {
+    const [profile, setProfile] = useState({name: 'James',
+                                            age: 235,
+                                            catFood: 5
+                                            });
+
+    const value = {profile, setProfile}
     return (
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="CatSimulator"
-            component={CatSimulator}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen 
-            name="TodoList"
-            component={TodoListScreen}
-            options={{headerShown: true}}
+    <profileContext.Provider value={value}>
+        <NavigationContainer>
+            <Stack.Navigator>
+            <Stack.Screen
+                name="CatSimulator"
+                component={CatSimulator}
+                options={{headerShown: false}}
             />
-        </Stack.Navigator>
-      </NavigationContainer>
+            <Stack.Screen 
+                name="TodoList"
+                component={TodoListScreen}
+                options={{headerShown: false}}
+                />
+            <Stack.Screen 
+                name="FocusClock"
+                component={FocusClock}
+                options={{headerShown: false}}
+                />
+            </Stack.Navigator>
+        </NavigationContainer>
+      </profileContext.Provider>
     );
   };
 
