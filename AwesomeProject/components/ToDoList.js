@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, Pressable, Alert} from 'react-native';
+import { View, Text, StyleSheet, FlatList, Pressable, Alert, Vibration, Modal} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import profileContext from './profileContext';
@@ -8,6 +8,7 @@ import AddTodo from './AddToDo';
 export default function TodoListScreen({route}) {
   const [todo, setTodo] = useState('');
   const [todos, setTodos] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
   const {profile, setProfile} = useContext(profileContext);
 
   const getTodos = async () => {
@@ -49,8 +50,8 @@ export default function TodoListScreen({route}) {
 
   const handleDeleteTodo = id => {
     setProfile({catFood: profile.catFood + 1,
-                name: 'James',
-                age: 235})
+                name: profile.name,
+                age: profile.age})
     const filteredTodos = todos.filter(item => item.id !== id);
     setTodos(filteredTodos);
     storeTodos(filteredTodos)
@@ -60,6 +61,29 @@ export default function TodoListScreen({route}) {
 
   return (
     <View style={styles.maincontainor}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text>'yayyyy! u earn 1 catfood'</Text>
+            <Pressable
+              style={styles.buttonClose}
+              onPress={() => {route.params.updateCatFood(1),
+                              setModalVisible(false)
+              }}>
+              <Text></Text>
+              <Text></Text>
+              <Text style={styles.textStyle}>Ok</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
       <View style={styles.header}>
         <Text style={styles.headerText}>{profile.name} wants to remind u ≧ᴗ≦✧</Text>
       </View>
@@ -71,9 +95,10 @@ export default function TodoListScreen({route}) {
           renderItem={({ item }) => (
             <View style={styles.todo}>
               <Pressable
-                onPress={() => {Alert.alert('', 'yayyyy! u earn 1 catfood', 'ok')
+                onPress={() => {setModalVisible(true)
                                 handleDeleteTodo(item.id)
-                                route.params.updateCatFood(1)
+                                Vibration.vibrate()
+                                // route.params.updateCatFood(1)
                               }}
                 style={styles.finishButton}
               >
@@ -149,5 +174,30 @@ const styles = StyleSheet.create({
     width: 30,
     alignItems: 'center',
     justifyContent: 'center',
-  }
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },buttonClose: {
+    height: 30,
+    width: 30,
+    alignItems: 'center',
+  },
 });

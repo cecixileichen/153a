@@ -32,13 +32,13 @@ const CatSimulator = ({navigation}) => {
             const jsonValue = await AsyncStorage.getItem('CatFood')
             if (jsonValue==null){
                 setProfile({catFood: 5,
-                            name: 'James',
-                            age: 235})
+                            name: profile.name,
+                            age: profile.age})
             } else {
                 const num = JSON.parse(jsonValue);
                 setProfile({catFood: num,
-                            name: 'James',
-                            age: 235})
+                            name: profile.name,
+                            age: profile.age})
             }
         } catch (e) {
             console.log('error in getData ')
@@ -75,7 +75,7 @@ const CatSimulator = ({navigation}) => {
   return (
         <View style={styles.maincontainor} >
             <View style={styles.header}>
-                <Text>Happy Thursday :)</Text>
+                <Text>Happy Friday :)</Text>
                 <NameTag/>
             </View>
             <View style={styles.containor}>
@@ -111,7 +111,7 @@ const CatSimulator = ({navigation}) => {
             </View>
             <View style={styles.footer}>
                 <NavigateButton type={false} onPress={() => navigation.navigate('TodoList', {updateCatFood})} />
-                <NavigateButton type={true} onPress={() => navigation.navigate('FocusClock')} />
+                <NavigateButton type={true} onPress={() => navigation.navigate('FocusClock', {updateCatFood})} />
             </View>
         </View>
   )
@@ -119,7 +119,7 @@ const CatSimulator = ({navigation}) => {
 
 const MyStack = () => {
     const [profile, setProfile] = useState({name: 'James',
-                                            age: 235,
+                                            age: 236,
                                             catFood: 5
                                             });
 

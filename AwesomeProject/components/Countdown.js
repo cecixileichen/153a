@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from "react";
 
 import Cat2 from "./Cat2";
 
-const Countdown = ({second, updateCountDown}) => {
+const Countdown = ({second, setModalVisible}) => {
     const [countdown, setCountdown] = useState(second);
     const timerId = useRef()
 
@@ -26,8 +26,7 @@ const Countdown = ({second, updateCountDown}) => {
         if(countdown === 0) {
             clearInterval(timerId.current)
             Vibration.vibrate()
-            alert('yayyyy! u earn 1 catfood',[{text: 'Cancel',
-            onPress: () => console.log('Cancel Pressed')}])
+            setModalVisible(true)
         }
     }, [countdown])
 

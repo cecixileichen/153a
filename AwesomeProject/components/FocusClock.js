@@ -1,17 +1,42 @@
 import React, { useContext, useState, useEffect} from 'react';
-import { View, Text, StyleSheet, Pressable, TextInput} from 'react-native';
+import { View, Text, StyleSheet, Pressable, TextInput, Modal} from 'react-native';
 
 import profileContext from './profileContext';
 import Countdown from './Countdown';
 import Cat2 from './Cat2';
 
-export default function FocusClock({duration}) {
+export default function FocusClock({route}) {
     const {profile} = useContext(profileContext);
     const [onCount, setOnCount] = useState(false);
     const [time, setTime] = useState(0);
+    const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <View style={styles.maincontainor}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text>yayyyy! u earn 1 catfood</Text>
+            <Pressable
+              style={styles.buttonClose}
+              onPress={() => {route.params.updateCatFood(1),
+                              setModalVisible(false),
+                              setOnCount(false)
+              }}>
+              <Text></Text>
+              <Text></Text>
+              <Text style={styles.textStyle}>Ok</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
         <View style={styles.header}>
             <Text style={styles.headerText}>It's time to study with {profile.name} (ﾟoﾟ;;</Text>
         </View>
@@ -23,7 +48,7 @@ export default function FocusClock({duration}) {
             <Cat2 />
           </View>
           <View style={styles.footer}>
-            <Countdown second={time} />
+            <Countdown second={time} setModalVisible={setModalVisible}/>
           </View>
           </>
           :
@@ -44,7 +69,7 @@ export default function FocusClock({duration}) {
                 <Text>15 min</Text>
             </View>
           </Pressable>
-          <Pressable onPress={() => setTime(1)}>
+          <Pressable onPress={() => setTime(5)}>
           <View style={styles.textbox}>
               <Text>test: 5 seconds</Text>
           </View>
@@ -103,5 +128,30 @@ const styles = StyleSheet.create({
   footer: {
     flex: 1,
     alignItems: 'center'
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },buttonClose: {
+    height: 30,
+    width: 30,
+    alignItems: 'center',
   },
 });
